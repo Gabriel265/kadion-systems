@@ -1,0 +1,68 @@
+.pricing-table-container {
+  overflow-x: auto;
+  margin-bottom: 3rem;
+}
+
+.pricing-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.pricing-table th,
+.pricing-table td {
+  padding: 1rem;
+  text-align: center;
+  border: 1px solid #e5e7eb;
+}
+
+.pricing-table th {
+  background-color: var(--primary);
+  color: white;
+}
+
+.pricing-table th:first-child,
+.pricing-table td:first-child {
+  text-align: left;
+  font-weight: 500;
+}
+
+.pricing-table tr:nth-child(even) {
+  background-color: #f9fafb;
+}
+
+.discounts-section,
+.payment-section {
+  margin-top: 3rem;
+}
+
+.discounts-section h3,
+.payment-section h3 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.discount-card,
+.payment-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.discount-card h4,
+.payment-card h4 {
+  color: var(--secondary);
+  margin-bottom: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .discounts-grid,
+  .payment-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .discount-card,
+  .payment-card {
+    margin-bottom: 1rem;
+  }
+}

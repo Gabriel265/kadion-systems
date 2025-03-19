@@ -1,0 +1,79 @@
+.packages-grid {
+  margin-top: 3rem;
+}
+
+.package-card {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+}
+
+.recommended {
+  transform: scale(1.05);
+  border: 2px solid var(--primary);
+  z-index: 10;
+}
+
+.recommendation-badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: var(--accent);
+  color: white;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transform: rotate(45deg) translateX(25%) translateY(-100%);
+  transform-origin: top right;
+  width: 200px;
+  text-align: center;
+}
+
+.package-price {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--secondary);
+  margin-bottom: 1.5rem;
+}
+
+.package-features {
+  list-style: none;
+  margin-bottom: 2rem;
+  flex-grow: 1;
+}
+
+.package-features li {
+  padding: 0.5rem 0;
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.package-features li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--primary);
+  font-weight: bold;
+}
+
+.package-btn {
+  margin-top: auto;
+  width: 100%;
+  text-align: center;
+}
+
+@media (max-width: 992px) {
+  .packages-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .package-card {
+    margin-bottom: 1.5rem;
+  }
+  
+  .recommended {
+    transform: none;
+  }
+}
