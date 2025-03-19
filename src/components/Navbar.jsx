@@ -1,10 +1,38 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import '../styles/Navbar.css';
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const location = useLocation();
+  const indicatorRef = useRef(null);
+  const navRef = useRef(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const routes = [
+    { path: '/', name: 'Home' },
+    { path: '/about', name: 'About' },
+    { path: '/services', name: 'Services' },
+    { path: '/pricing', name: 'Pricing' },
+    { path: '/contact', name: 'Contact' }
+  ];
+
+  useEffect(() => {
+    const currentIndex = routes.findIndex(route => route.path === location.pathname);
+    setActiveIndex(currentIndex >= 0 ? currentIndex : 0);
+  }, [location]);
+
+  useEffect(() => {
+    if (indicatorRef.current && navRef.current) {
+      const navItems = navRef.current.querySelectorAll('.nav-item');
+      if (navItems[activeIndex]) {
+        const navItem = navItems[activeIndex];
+        indicatorRef.current.style.width = `${navItem.offsetWidth}px`;
+        indicatorRef.current.style.left = `${navItem.offsetLeft}px`;
+      }
+    }
+  }, [activeIndex, menuOpen]);
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -21,13 +49,25 @@ const Navbar = () => {
           {menuOpen ? <FaTimes /> : <FaBars />}
         </div>
         
-        <ul className={`nav-links ${menuOpen ? 'active' : ''}`}>
-          <li><Link to="/" onClick={() => setMenuOpen(false)}>Home</Link></li>
-          <li><Link to="/about" onClick={() => setMenuOpen(false)}>About</Link></li>
-          <li><Link to="/services" onClick={() => setMenuOpen(false)}>Services</Link></li>
-          <li><Link to="/pricing" onClick={() => setMenuOpen(false)}>Pricing</Link></li>
-          <li><Link to="/contact" onClick={() => setMenuOpen(false)}>Contact</Link></li>
-        </ul>
+        <div className="nav-container">
+          <ul ref={navRef} className={`nav-links ${menuOpen ? 'active' : ''}`}>
+            {routes.map((route, index) => (
+              <li key={route.path} className="nav-item">
+                <Link 
+                  to={route.path} 
+                  className={`nav-link ${index === activeIndex ? 'active' : ''}`}
+                  onClick={() => {
+                    setActiveIndex(index);
+                    setMenuOpen(false);
+                  }}
+                >
+                  {route.name}
+                </Link>
+              </li>
+            ))}
+            <div className="indicator" ref={indicatorRef}></div>
+          </ul>
+        </div>
       </div>
     </nav>
   );
