@@ -28,11 +28,38 @@ const Navbar = () => {
       const navItems = navRef.current.querySelectorAll('.nav-item');
       if (navItems[activeIndex]) {
         const navItem = navItems[activeIndex];
-        indicatorRef.current.style.width = `${navItem.offsetWidth}px`;
-        indicatorRef.current.style.left = `${navItem.offsetLeft}px`;
+        const width = navItem.offsetWidth;
+        const height = navItem.offsetHeight;
+        const left = navItem.offsetLeft;
+        const top = navItem.offsetTop;
+        
+        indicatorRef.current.style.width = `${width}px`;
+        indicatorRef.current.style.height = `${height}px`;
+        indicatorRef.current.style.left = `${left}px`;
+        indicatorRef.current.style.top = `${top}px`;
       }
     }
   }, [activeIndex, menuOpen]);
+
+  // Add window resize listener to recalculate indicator position
+  useEffect(() => {
+    const handleResize = () => {
+      if (indicatorRef.current && navRef.current) {
+        const navItems = navRef.current.querySelectorAll('.nav-item');
+        if (navItems[activeIndex]) {
+          const navItem = navItems[activeIndex];
+          indicatorRef.current.style.width = `${navItem.offsetWidth}px`;
+          indicatorRef.current.style.left = `${navItem.offsetLeft}px`;
+          indicatorRef.current.style.top = `${navItem.offsetTop}px`;
+        }
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [activeIndex]);
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -51,6 +78,7 @@ const Navbar = () => {
         
         <div className="nav-container">
           <ul ref={navRef} className={`nav-links ${menuOpen ? 'active' : ''}`}>
+            <div className="indicator" ref={indicatorRef}></div>
             {routes.map((route, index) => (
               <li key={route.path} className="nav-item">
                 <Link 
@@ -65,7 +93,6 @@ const Navbar = () => {
                 </Link>
               </li>
             ))}
-            <div className="indicator" ref={indicatorRef}></div>
           </ul>
         </div>
       </div>
